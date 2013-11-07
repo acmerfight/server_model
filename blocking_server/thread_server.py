@@ -32,7 +32,6 @@ def server():
 def handle_request(client_socket, text_content):
     client_socket.recv(1024)
     try:
-        print requests.get("http://www.amazon.com")
         client_socket.sendall(text_content)
     except socket.error:
         client_socket.close()

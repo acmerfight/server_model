@@ -26,7 +26,6 @@ while 1:
     client_socket, addresss = server_socket.accept()
     request = client_socket.recv(1024)
     try:
-        requests.get("http://www.amazon.com")
         client_socket.sendall(text_content)
     except socket.error:
         client_socket.close()
