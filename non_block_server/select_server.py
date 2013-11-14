@@ -1,5 +1,6 @@
 import socket
 import select
+import time
 
 
 text_content = """
@@ -28,14 +29,12 @@ cnt = 1
 
 while inputs:
     ready_to_read, ready_to_write, in_error = select.select(inputs, outputs, inputs)
-    print ready_to_read, ready_to_write
     for s in ready_to_read:
         if s is server_socket:
             client_socket, addresss = server_socket.accept()
             client_socket.setblocking(0)
             inputs.append(client_socket)
         else:
-            print "remove ", s
             request = s.recv(1024)
             if request:
                 if s not in outputs:
@@ -47,9 +46,11 @@ while inputs:
                 s.close()
 
     for s in ready_to_write:
+        time.sleep(1)
         s.sendall(text_content)
-        print "OK"
         outputs.remove(s)
+        inputs.remove(s)
+        s.close()
 
     for s in in_error:
         inputs.remove(s)
